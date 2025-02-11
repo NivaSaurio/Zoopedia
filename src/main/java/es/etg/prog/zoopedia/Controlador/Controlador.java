@@ -107,19 +107,19 @@ public class Controlador {
                 respuesta = validarRespuesta();
                 if(respuesta.equalsIgnoreCase("si")){
                     marcarFavorito(animal);
-                }else{
-                    System.out.println("Continuemos con el registro " + MSG_CONFIRMACION + animal);
-                    respuesta = sc.nextLine();
-                    if(respuesta.equalsIgnoreCase("no")){
-                        repetir = true;
-                    }else{
-                        usuario.agregarAnimal(animal);
-                        System.out.println("Quieres añadir más animales? ");
-                        respuesta = sc.nextLine();
-                        if(respuesta.equalsIgnoreCase("si")){
-                            repetir = true;
-                        }
-                    }
+                }
+                System.out.println("Continuemos con el registro " + MSG_CONFIRMACION + animal);
+                respuesta = validarRespuesta();
+                if(respuesta.equalsIgnoreCase("si")){
+                    usuario.agregarAnimal(animal);
+                    System.out.println("Animal registrado correctamente");
+                } else {
+                    repetir = true;
+                }
+                System.out.println("¿Quieres añadir más animales? ");
+                respuesta = validarRespuesta();
+                if(respuesta.equalsIgnoreCase("si")){
+                    repetir = true;
                 }
             } while (repetir);
         }else{
@@ -210,6 +210,43 @@ public class Controlador {
         animal.setFavorito(true);
         System.out.println(animal.getNombre() + "se marcó como fav");
     }
+
+    public static void cambiarFavorito(){
+        if(usuario != null && !usuario.getListaAnimales().isEmpty()){
+            Animal animalFavorito = null;
+            for(Animal animal : usuario.getListaAnimales()){
+                if(animal.getFavorito()){
+                    animalFavorito = animal;
+                    break;
+                }
+            }
+            if(animalFavorito != null){
+                System.out.println("Tu animal favorito es: " + animalFavorito.getNombre());
+            } else {
+                System.out.println("No hay favorito");
+            }
+    
+            System.out.println("Animales registrados:");
+            int index = 1;
+            for(Animal animal : usuario.getListaAnimales()){
+                System.out.println(index + ". " + animal.getNombre());
+                index++;
+            }
+    
+            System.out.print("Selecciona un nuevo favorito: ");
+            int opcion = validarNumentero();
+            if(opcion > 0 && opcion <= usuario.getListaAnimales().size()){
+                Animal nuevoFavorito = usuario.getListaAnimales().get(opcion - 1);
+                marcarFavorito(nuevoFavorito);
+                System.out.println("Nuevo animal favorito: " + nuevoFavorito.getNombre());
+            } else {
+                System.out.println("Opción no válida. No se ha cambiado el favorito.");
+            }
+        } else {
+            System.out.println("No hay animales registrados para cambiar el favorito.");
+        }
+    }
+    
 
     public static void calcularPuntos(Animal animal){
         int puntos = 0;

@@ -23,6 +23,9 @@ public class Pokedex {
                 case 3:
                     Controlador.mostrarAnimales();
                     break;
+                case 4:
+                    Controlador.cambiarFavorito();
+                    break;
                 case 0:
                     System.out.println("Saliendo del programa,,,,");
                     System.exit(0);
